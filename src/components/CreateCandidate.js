@@ -70,7 +70,7 @@ const CreateCandidate = () => {
         sessionStorage.removeItem('checkInput')
     }
 
-    const [ reducer, setRedeuce ] = useReducer(x => x + 1, 0)
+    const [reducer, setRedeuce] = useReducer(x => x + 1, 0)
 
     const CheckPhone = (e) => {
         setPhone(e.target.value)
@@ -78,7 +78,7 @@ const CreateCandidate = () => {
     }
 
     useEffect(() => {
-        if(phone.length > 10){
+        if (phone.length > 10) {
             try {
                 axios.get(url.Mainurl + url.getBil + `?phone=${phone}`).then(res => {
                     setId(res.data.rows[0].candidate.id)
@@ -89,7 +89,7 @@ const CreateCandidate = () => {
                     setMsg("ເບີນີ້ຖືກເພິ່ມເຂົ້າໃນລະບົບແລ້ວ")
                     setEnableNext(1)
                     setInput('true')
-                    if(phone.length == 11){
+                    if (phone.length == 11) {
                         setEnableNext(1)
                     }
                 })
@@ -103,13 +103,13 @@ const CreateCandidate = () => {
                 getDistrict('')
                 setClick(0)
                 clearData()
-                if(phone.length > 10){
+                if (phone.length > 10) {
                     setEnableNext(1)
-                }else{
+                } else {
                     setEnableNext(0)
                 }
             }
-        }else if(phone.length < 11){
+        } else if (phone.length < 11) {
             setMsg("ເບີນີ້ຍັງບໍ່ມີຂໍ້ມູນໃນລະບົບ!")
             setId(null)
             setName("")
@@ -120,9 +120,9 @@ const CreateCandidate = () => {
             clearData()
             setEnableNext(0)
         }
-   
+
     }, [reducer])
-   
+
 
     return (
         <div className="content-wrapper">
@@ -150,12 +150,12 @@ const CreateCandidate = () => {
                                                     <div className='input-group'>
                                                         <span className='input-group-text'>+856</span>
                                                         <NumberFormatBase onChange={CheckPhone} value={phone} className="form-control" min={0} maxLength={11} placeholder="ກະລຸນາປ້ອນເບີໃຫ້ຄົບ 11 ໂຕ ຕົວຢ່າງ 020xxx..." required />
-                                                        {phone.length < 11 ? 
+                                                        {phone.length < 11 ?
                                                             <span className='input-group-text text-danger'>ແນະນຳ 020 ຂື້ນຕົ້ນສະເໝີ</span>
-                                                         :
-                                                            msg == 'ເບີນີ້ຖືກເພິ່ມເຂົ້າໃນລະບົບແລ້ວ' ? 
-                                                            <span className='input-group-text text-success'>{msg}</span> :
-                                                            <span className='input-group-text text-danger'>{msg}</span>
+                                                            :
+                                                            msg == 'ເບີນີ້ຖືກເພິ່ມເຂົ້າໃນລະບົບແລ້ວ' ?
+                                                                <span className='input-group-text text-success'>{msg}</span> :
+                                                                <span className='input-group-text text-danger'>{msg}</span>
                                                         }
                                                     </div>
                                                     {/* <p>{candidate.filter(e => e.phone == phone).map(e => <p className='text-danger'>ເບີ {phone} ມີຄົນໃຊ້ໄປແລ້ວ</p>)}</p> */}
@@ -169,14 +169,14 @@ const CreateCandidate = () => {
                                             <div className="col-md-6">
                                                 <div className="form-group">
                                                     <label htmlFor="exampleInputEmail1">ຊື່ ແລະ ນາມສະກຸນ</label>
-                                                    <input onChange={e => setName(e.target.value)} defaultValue={name} type="text" className="form-control" name='name' placeholder="Enter Name" required disabled={phone.length == 11 ? false : true}/>
+                                                    <input onChange={e => setName(e.target.value)} defaultValue={name} type="text" className="form-control" name='name' placeholder="Enter Name" required disabled={phone.length == 11 ? false : true} />
                                                 </div>
                                             </div>
 
                                             <div className="col-md-6">
                                                 <div className="form-group">
                                                     <label htmlFor="exampleInputEmail1">ບ້ານ</label>
-                                                    <input onChange={e => setVillage(e.target.value)} defaultValue={village} type="text" className="form-control" placeholder="Enter Village" required disabled={phone.length == 11 ? false : true}/>
+                                                    <input onChange={e => setVillage(e.target.value)} defaultValue={village} type="text" className="form-control" placeholder="Enter Village" required disabled={phone.length == 11 ? false : true} />
                                                 </div>
                                             </div>
 
@@ -184,7 +184,7 @@ const CreateCandidate = () => {
                                                 <div className="form-group">
                                                     <label htmlFor="exampleInputEmail1">ແຂວງ</label>
                                                     <select className="form-control form-select" name='province_id' onChange={e => getProvince(e.target.value)} required disabled={phone.length == 11 ? false : true}>
-                                                    {<option value={inputProvince}>{inputProvince != null ? province.filter(a => a.id == inputProvince).map((e) => e.name) : "--ກະລຸນາເລືອກແຂວງ--"}</option>}
+                                                        {<option value={inputProvince}>{inputProvince != null ? province.filter(a => a.id == inputProvince).map((e) => e.name) : "--ກະລຸນາເລືອກແຂວງ--"}</option>}
 
                                                         {province.map((e) =>
                                                             <option key={e.id} value={e.id}>{e.name}</option>

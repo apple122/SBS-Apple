@@ -2,8 +2,6 @@ import React, { useState, createContext } from "react";
 import "./style.css";
 import useLuckyDraw from "./useLuckyDraw";
 import useCounter from "../Logic/useCounter";
-import url from "../API-links/apiurl";
-import axios from "axios";
 import CountdownTimer from "../CountdownTimer";
 import { Button, Modal, Form } from 'react-bootstrap'
 import Spinner from '../uitilities/Spinner'

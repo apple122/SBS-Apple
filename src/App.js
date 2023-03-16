@@ -20,7 +20,8 @@ function App(props) {
 
   const [username, setusername] = useState('')
   const [password, setpassword] = useState('')
-  const LoginSubmit = () => {
+  function LoginSubmit(e) {
+    e.preventDefault()
     if (!(username == '' && password == '')) {
       setmessage('ກະລຸນາລໍຖ້າ...')
       axios.post(url.Mainurl + url.loginedUser, {
@@ -40,10 +41,10 @@ function App(props) {
           setmessage('')
         }
       }).catch((err) => {
-        setmessage('Username or password is incorrect 2')
+        setmessage('Username or password is incorrect')
       })
     } else {
-      setmessage('Username or password is incorrect 1')
+      setmessage('Username or password is incorrect')
     }
   }
 
@@ -75,7 +76,7 @@ function App(props) {
             <Icon />
             <Title />
 
-            <from method='POST'>
+            <form method='POST' onSubmit={LoginSubmit}>
               <div className='form-group'>
                 <label>UserName</label>
                 <input type='text' className='form-control p-2' onChange={(e) => setusername(e.target.value)} placeholder='ກະລຸນາປ້ອນ UserName' required />
@@ -95,9 +96,9 @@ function App(props) {
               </div>
               &nbsp;
               <div className='form-footer'>
-                <button type='submit' onClick={LoginSubmit} className='form-control btn btn-sm btn-primary'>Login</button>
+                <button type='submit' className='form-control btn btn-sm btn-primary'>Login</button>
               </div>
-            </from>
+            </form>
 
           </div>
         </div>
@@ -106,15 +107,6 @@ function App(props) {
       </>
     )
   }
-
-  // return (
-  //   <>
-  //     <Header />
-  //     <Menu />
-  //     <Routers />
-  //     <Footer />
-  //   </>
-  // )
 
 }
 
