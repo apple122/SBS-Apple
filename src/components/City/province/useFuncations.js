@@ -1,5 +1,5 @@
 import axios from 'axios'
-import url from './data'
+import url from '../data'
 import React, { useEffect, useReducer, useState } from 'react'
 import Swal from 'sweetalert2'
 
@@ -11,11 +11,14 @@ const useFuncations = () => {
     const [proPage, setproPage] = useState(1)
     const [proPageN, setproPageN] = useState(1)
 
+    const [Loaderror, setLerror] = useState(false)
+
     useEffect(() => {
-        axios.get(url.Mainurl + url.getproveince).then((res) => {
+        axios.get(url.Mainurl + url.getproveince + '&page=' + proPageN).then((res) => {
             setAPI(res.data.results.reverse())
             setproL(res.data.count)
             setproPage(res.data.total_pages)
+            setLerror(true)
         })
 
     }, [reducer])
@@ -134,15 +137,17 @@ const useFuncations = () => {
     }
 
     function Nextpro() {
-        setRedeuce()
         if (proPageN < proPage) {
             setproPageN(proPageN + 1)
+            setRedeuce()
+            setLerror(false)
         }
     }
     function Blackpro() {
-        setRedeuce()
         if (proPageN > 1) {
             setproPageN(proPageN - 1)
+            setRedeuce()
+            setLerror(false)
         }
     }
 
@@ -164,6 +169,8 @@ const useFuncations = () => {
         Blackpro,
         proPage,
         proPageN,
+
+        Loaderror,
     }
 }
 

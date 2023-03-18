@@ -1,48 +1,25 @@
 import React, { useState } from 'react'
-import useFuncations from './useFuncations'
+import useFuncations from './province/useFuncations'
+import useFuncations_dis from './district/useFuncations'
+import useFuncations_vil from './village/useFunctions'
 import './provice.css'
 import Province from './province/Province'
 import District from './district/District'
+import Village from './village/Village'
 
 const Index = () => {
     let {
-        setformValues,
-        SubProvine,
-        refrest,
-        GETAPI,
-        GETAPIDIS,
-        Loadding,
-        delprovice,
-        ListDis,
-        AlertD,
-        setformDis,
-        SubDistrict,
-        refrestDis,
-        deldistrict,
         proLegn,
-        editprovice,
-        loadedit,
-        cancel_pro,
-        Byidpro,
-        setBypro,
-        EditProvine,
-        editdistrict,
-        loaddis,
-        cancel_dis,
-        datadis,
-        setdatadis,
-        subEditeDis,
-
-        Nextpro,
-        Blackpro,
-        proPage,
-        proPageN,
-
-        clickdrop,
-        droppro,
     } = useFuncations()
 
-    let xpro = 23 * (proPageN - 1) + 1
+    let {
+        Count_dis,
+    } = useFuncations_dis()
+
+    let {
+        Count_vil,
+    } = useFuncations_vil()
+
 
     const [paget, setpagetrue] = useState('province')
     function pagetrue(e) {
@@ -58,17 +35,17 @@ const Index = () => {
                             <div className="col-12">
                                 <div className="card">
                                     <div className="card-header">
-                                        <h2>ຂໍ້ມູນແຂວງ ແລະ ເມືອງ</h2>
+                                        <h2>ຂໍ້ມູນ ບ້ານ,ເມືອງ,ແຂວງ ທັ້ງໝົດ</h2>
                                     </div>
                                     <ul class="nav nav-tabs pt-2 px-2">
                                         <li class="nav-item">
                                             <button class={`nav-link ${paget == 'province' ? 'active' : ''}`} onClick={() => pagetrue('province')}>ຂໍ້ມູນແຂວງ ( <strong className='text-danger'>{proLegn}</strong> )</button>
                                         </li>
                                         <li class="nav-item">
-                                            <button class={`nav-link ${paget == 'district' ? 'active' : ''}`} onClick={() => pagetrue('district')}>district</button>
+                                            <button class={`nav-link ${paget == 'district' ? 'active' : ''}`} onClick={() => pagetrue('district')}>ຂໍ້ມູນເມືອງ ( <strong className='text-danger'>{Count_dis}</strong> )</button>
                                         </li>
                                         <li class="nav-item">
-                                            <button class={`nav-link ${paget == 'village' ? 'active' : ''}`} onClick={() => pagetrue('village')}>village</button>
+                                            <button class={`nav-link ${paget == 'village' ? 'active' : ''}`} onClick={() => pagetrue('village')}>ຂໍ້ມູນບ້ານ ( <strong className='text-danger'>{Count_vil}</strong> )</button>
                                         </li>
                                     </ul>
                                 </div>
@@ -76,6 +53,7 @@ const Index = () => {
 
                             {paget === 'province' ? <Province/> : ''}
                             {paget === 'district' ? <District/> : ''}
+                            {paget === 'village' ? <Village/> : ''}
 
                         </div>
                     </div>

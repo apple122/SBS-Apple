@@ -6,10 +6,12 @@ import url from './data'
 export default function useFunctions() {
 
   const [API, setAPI] = useState([])
+  const [COUNT, setCount] = useState([])
   const [reducer, setRedeuce] = useReducer(x => x + 1, 0)
   useEffect(() => {
     axios.get(url.Mainurl + url.getusers).then((res) => {
       setAPI(res.data.results)
+      setCount(res.data.count)
     })
   }, [reducer])
 
@@ -121,16 +123,71 @@ export default function useFunctions() {
     setLoad_edit(false)
   }
 
-  const [ message, setMes ] = useState('')
+  const [message, setMes] = useState('')
+  const [confirm_ps, setConfirmps] = useState('')
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
-  function changeusers(e) {
-    axios.post(url.Mainurl + url.resetpassword, {
-      "email": e.email
-    }).then((res) => {
-      setMes(res.data.message)
-      setShow(true)
+  async function changeusers(e) {
+    setMes(e)
+    const { value: Confirm_password } = await Swal.fire({
+      title: 'Enter your password',
+      input: 'password',
+      inputLabel: 'Password',
+      inputPlaceholder: 'Enter your password',
+      inputAttributes: {
+        maxlength: 18,
+        autocapitalize: 'off',
+        autocorrect: 'off'
+      }
     })
+    if (Confirm_password !== '') {
+      setConfirmps(Confirm_password)
+      axios.post(url.Mainurl + url.loginedUser, {
+        username: e.username,
+        password: Confirm_password
+      }).then((res) => {
+        setShow(true);
+      }).catch((err) => {
+        Swal.fire(`The password is incorrect. Please try again!`)
+      })
+    }
+  }
+
+  const token = localStorage.getItem('token')
+  function SubChangePS(e) {
+    e.preventDefault()
+    if (e.target[0].value === e.target[1].value) {
+      axios.put(url.Mainurl + url.putchangeps + message.id, {
+        "old_password": confirm_ps,
+        "password": e.target[0].value,
+        "confirm_password": e.target[1].value
+      },{headers: {
+          Accept: "application/json",
+  
+          "Content-Type": "application/json; charset=UTF-8",
+          Authorization: `Bearer ${token}`,
+        },
+      }).then((res) => {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+        setRedeuce()
+        Toast.fire({
+          icon: 'success',
+          title: 'ປ່ຽນລະຫັດຜ່ານສຳເລັດ!'
+        })
+      })
+    } else {
+      alert('ລະຫັດຜ່ານບໍ່ຕົງກັນ!')
+    }
   }
 
   return {
@@ -146,6 +203,7 @@ export default function useFunctions() {
     changeusers,
     show,
     handleClose,
-    message,
+    SubChangePS,
+    COUNT,
   }
 }

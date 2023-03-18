@@ -3,15 +3,16 @@ import React, { useEffect, useReducer, useState } from 'react'
 import Swal from 'sweetalert2'
 import url from '../data'
 
-export default function useFuncations() {
+export default function useFunctions() {
 
     const [APIPRO, setAPIPRO] = useState([])
     const [APIDIS, setAPIDIS] = useState([])
+    const [APIVIL, setAPIVIL] = useState([])
     const [ProPage, setProPage] = useState(1)
     const [DisPage, setDisPage] = useState(1)
+    const [VilPage, setVilPage] = useState(1)
 
-    const [Legnht_dis, setLegnht_dis] = useState(20)
-    const [Count_dis, setCount_dis] = useState(20)
+    const [Count_vil, setCount_vil] = useState(20)
     const [Loaderror, setLerror] = useState(false)
 
     const [reducer, setReducer] = useReducer(x => x + 1, 0)
@@ -21,94 +22,36 @@ export default function useFuncations() {
             setProPage(res.data.total_pages)
         })
 
-        if(listpro === ''){
+        if (listpro === '') {
             axios.get(url.Mainurl + url.getdistrict + '&page=' + nextpage_dis).then((res) => {
                 setAPIDIS(res.data.results.reverse())
-                setDisPage(res.data.total_pages)
-                setCount_dis(res.data.count)
-                setLerror(true)
             })
-        }else{
+        } else {
             axios.get(url.Mainurl + url.getdistrict + '&page=' + nextpage_dis + '&province=' + listpro.id).then((res) => {
                 setAPIDIS(res.data.results.reverse())
                 setDisPage(res.data.total_pages)
-                setCount_dis(res.data.count)
-                setLerror(true)
             })
         }
 
-        axios.get(url.Mainurl + url.getdistrict + '&page=1').then((res) => {
-            setLegnht_dis(res.data.results)
-        })
+        if (listdis === '') {
+            axios.get(url.Mainurl + url.getvillage + '&page=' + nextpage_vill).then((res) => {
+                setAPIVIL(res.data.results)
+                setLerror(true)
+                setCount_vil(res.data.count)
+                setVilPage(res.data.total_pages)
+            })
+        } else {
+            axios.get(url.Mainurl + url.getvillage + '&page=' + nextpage_vill +'&district=' + listdis.id).then((res) => {
+                setAPIVIL(res.data.results)
+                setLerror(true)
+                setCount_vil(res.data.count)
+                setVilPage(res.data.total_pages)
+            })
+        }
+
     }, [reducer])
 
     const [meslistpro, setmslist] = useState(false)
-    function SubDistrict(e) {
-        e.preventDefault()
-        if (listpro !== '') {
-            axios.post(url.Mainurl + url.createdistric, {
-                "district": e.target[0].value,
-                "is_active": true,
-                "province": listpro.id
-            }).then((res) => {
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.addEventListener('mouseenter', Swal.stopTimer)
-                        toast.addEventListener('mouseleave', Swal.resumeTimer)
-                    }
-                })
-                setReducer()
-                Toast.fire({
-                    icon: 'success',
-                    title: 'ບັນທືກຂໍ້ມູນສຳເລັດ'
-                })
-            })
-        } else {
-            alert('~~ກະລຸນາເລືອກຂໍ້ມູນແຂວງກອນບັນທືກຂໍ້ມູນ~~')
-            setmslist(true)
-        }
-    }
-
-    function deldis(e) {
-        Swal.fire({
-            title: 'ທ່ານຕ້ອງການລົບຂໍ້ມູນນີ້ ຫຼື ບໍ່?',
-            text: "ເມືອລົບແລ້ວຂໍ້ມູນຈະຍັງເກັບ ແຕ່ບໍ່ສາມາດນຳມາໃຊ້ໄດ້ອີກ!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'ລົບຂໍ້ມູນ!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                axios.patch(url.Mainurl + url.patchdistrict + e.id, {
-                    "is_active": false
-                }).then((res) => {
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.addEventListener('mouseenter', Swal.stopTimer)
-                            toast.addEventListener('mouseleave', Swal.resumeTimer)
-                        }
-                    })
-                    setReducer()
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'ລົບຂໍ້ມູນສຳເລັດ'
-                    })
-                })
-            }
-        })
-
-    }
 
     if (meslistpro === true) {
         setTimeout(() => {
@@ -120,22 +63,35 @@ export default function useFuncations() {
     function Dropdow_province(e) {
         setlistpro(e)
         setshowlist(false)
-        setLerror(false)
         setReducer()
     }
 
-    function ClossState() {
-        setlistpro('')
-        setLerror(false)
+    const [listdis, setlistdis] = useState('')
+    function Dropdow_district(e) {
+        setlistdis(e)
         setReducer()
+        setshowL_dis(false)
     }
 
     const [show_listpro, setshowlist] = useState(false)
     function showlist() {
         if (show_listpro == false) {
             setshowlist(true)
+            setReducer()
         } else {
             setshowlist(false)
+            setReducer()
+        }
+    }
+
+    const [showlist_dis, setshowL_dis] = useState(false)
+    function showlistDIs() {
+        if (showlist_dis == false) {
+            setshowL_dis(true)
+            setReducer()
+        } else {
+            setshowL_dis(false)
+            setReducer()
         }
     }
 
@@ -158,25 +114,88 @@ export default function useFuncations() {
         if (nextpage_dis < DisPage) {
             setpropage_dis(nextpage_dis + 1)
             setReducer()
-            setLerror(false)
         }
     }
     function black_dis() {
         if (nextpage_dis > 1) {
             setpropage_dis(nextpage_dis - 1)
             setReducer()
-            setLerror(false)
         }
     }
 
-    let x = Legnht_dis.length * (nextpage_dis - 1) + 1
+    // Village 
+    function SubVillage(e) {
+        e.preventDefault()
+        if (listdis !== '') {
+            axios.post(url.Mainurl + url.postvillage, {
+                "village": e.target[0].value,
+                "is_active": true,
+                "district": listdis.id
+            }).then((res) => {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                setReducer()
+                Toast.fire({
+                    icon: 'success',
+                    title: 'ບັນທືກຂໍ້ມູນສຳເລັດ'
+                })
+            })
+        } else {
+            alert('~~ກະລຸນາເລືອກຂໍ້ມູນເມືອງກອນບັນທືກຂໍ້ມູນ~~')
+            setmslist(true)
+        }
+    }
 
-    function editSUb(e) {
+    function delvillage(e) {
+        Swal.fire({
+            title: 'ທ່ານຕ້ອງການລົບຂໍ້ມູນນີ້ ຫຼື ບໍ່?',
+            text: "ເມືອລົບແລ້ວຂໍ້ມູນຈະຍັງເກັບ ແຕ່ບໍ່ສາມາດນຳມາໃຊ້ໄດ້ອີກ!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'ລົບຂໍ້ມູນ!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.patch(url.Mainurl + url.patchvillage + e.id, {
+                    "is_active": false
+                }).then((res) => {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+                    setReducer()
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'ລົບຂໍ້ມູນສຳເລັດ'
+                    })
+                })
+            }
+        })
+    }
+
+    function updateVillage(e) {
         e.preventDefault()
         if (e) {
-            axios.patch(url.Mainurl + url.patchdistrict + e.target[1].value, {
-                "district": e.target[0].value,
-                "province": listpro === '' ? e.target[2].value : listpro.id
+            axios.patch(url.Mainurl + url.patchvillage + e.target[1].value, {
+                "village": e.target[0].value,
+                "district": listdis === '' ? e.target[2].value : listdis.id
             }).then((res) => {
                 console.log(res)
                 const Toast = Swal.mixin({
@@ -199,8 +218,25 @@ export default function useFuncations() {
         }
     }
 
+    const [nextpage_vill, setpropage_vill] = useState(1)
+    function Next_vil() {
+        if (nextpage_vill < VilPage) {
+            setpropage_vill(nextpage_vill + 1)
+            setReducer()
+            setLerror(false)
+        }
+    }
+    function Black_vil() {
+        if (nextpage_vill > 1) {
+            setpropage_vill(nextpage_vill - 1)
+            setReducer()
+            setLerror(false)
+        }
+    }
+
+
     return {
-        SubDistrict,
+        // provine
         APIPRO,
         APIDIS,
         listpro,
@@ -217,11 +253,22 @@ export default function useFuncations() {
         next_dis,
         DisPage,
         nextpage_dis,
-        x,
-        Count_dis,
-        deldis,
-        editSUb,
+        Count_vil,
         Loaderror,
-        ClossState,
+        showlistDIs,
+        showlist_dis,
+        Dropdow_district,
+        listdis,
+
+        // Village 
+        SubVillage,
+        APIVIL,
+        Loaderror,
+        delvillage,
+        updateVillage,
+        Black_vil,
+        Next_vil,
+        VilPage,
+        nextpage_vill,
     }
 }

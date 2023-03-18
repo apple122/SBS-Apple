@@ -208,9 +208,6 @@ function Add_bil(props) {
                             <Button variant="danger" onClick={handleClose} >
                                 ປິດ
                             </Button>
-                            {/* <Button variant="primary" type='submit'>
-                        ແກ້ໄຂ
-                    </Button> */}
                         </Modal.Footer>
                     </form>
                 </Modal.Body>

@@ -31,6 +31,7 @@ function App(props) {
         console.log(res)
         if (res.status == 200) {
           localStorage.setItem('token', res.data.access)
+          localStorage.setItem('refresh_token', res.data.refresh)
           sessionStorage.setItem('myToken', res.data.access);
           sessionStorage.setItem('conFirmToken', res.data.access);
           sessionStorage.setItem('confirm', res.data.access + 'true');

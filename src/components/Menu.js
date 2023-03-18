@@ -17,10 +17,11 @@ const Menu = (props) => {
   const location = useLocation();
   const splitLocation = location.pathname
   const token = localStorage.getItem('token')
+  const refresh_token = localStorage.getItem('refresh_token')
   let navigate = useNavigate()
 
-  const rand=()=>Math.random(0).toString(36).substr(2);
-  const setitem=(length)=>(rand()+rand()+rand()+rand()).substr(0,length);
+  const rand = () => Math.random(0).toString(36).substr(2);
+  const setitem = (length) => (rand() + rand() + rand() + rand()).substr(0, length);
 
   function Logout() {
     Swal.fire({
@@ -33,17 +34,19 @@ const Menu = (props) => {
       showCloseButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(url.Mainurl + url.logout, { headers: { "Authorization": `Bearer ${token}` }}).then((res) => {
-          sessionStorage.setItem('confirm', token + setitem(60) +'.'+ setitem(60) + 'true')
-          sessionStorage.setItem('conFirmToken', token + setitem(60) +'.'+ setitem(60) + 'true')
-          sessionStorage.setItem('myToken', token + setitem(60) +'.'+ setitem(60) + 'true')
+        axios.post(url.Mainurl + url.logout, {
+          refresh_token: refresh_token
+        }).then((res) => {
+          sessionStorage.setItem('confirm', token + setitem(60) + '.' + setitem(60) + 'true')
+          sessionStorage.setItem('conFirmToken', token + setitem(60) + '.' + setitem(60) + 'true')
+          sessionStorage.setItem('myToken', token + setitem(60) + '.' + setitem(60) + 'true')
           sessionStorage.removeItem('dt')
           localStorage.removeItem('token')
           navigate('/')
         }).catch((err) => {
-          sessionStorage.setItem('confirm', token + setitem(60) +'.'+ setitem(60) + 'true')
-          sessionStorage.setItem('conFirmToken', token + setitem(60) +'.'+ setitem(60) + 'true')
-          sessionStorage.setItem('myToken', token + setitem(60) +'.'+ setitem(60) + 'true')
+          sessionStorage.setItem('confirm', token + setitem(60) + '.' + setitem(60) + 'true')
+          sessionStorage.setItem('conFirmToken', token + setitem(60) + '.' + setitem(60) + 'true')
+          sessionStorage.setItem('myToken', token + setitem(60) + '.' + setitem(60) + 'true')
           sessionStorage.removeItem('dt')
           localStorage.removeItem('token')
           navigate('/')
@@ -57,59 +60,61 @@ const Menu = (props) => {
     sessionStorage.removeItem('input')
   }
 
-  if(splitLocation == "/reloadRandom") {
+  if (splitLocation == "/reloadRandom") {
     return navigate("/random")
   }
 
-  if(splitLocation == "/reloadDistrict") {
+  if (splitLocation == "/reloadDistrict") {
     return navigate("/district")
   }
 
-  if(splitLocation == "/reloadEvent") {
+  if (splitLocation == "/reloadEvent") {
     return navigate("/event")
   }
 
-  if(splitLocation == "/reloadPrize") {
+  if (splitLocation == "/reloadPrize") {
     return navigate("/prize")
   }
 
-  if(splitLocation == "/reloadProvince") {
+  if (splitLocation == "/reloadProvince") {
     return navigate("/province")
   }
 
-  if(splitLocation == "/reloadSlider") {
+  if (splitLocation == "/reloadSlider") {
     return navigate("/slider")
   }
 
-  if(splitLocation == "/reloadUser") {
+  if (splitLocation == "/reloadUser") {
     return navigate("/user")
   }
 
-  if(splitLocation == "/reloadAbout") {
+  if (splitLocation == "/reloadAbout") {
     return navigate("/about")
   }
 
-  if(splitLocation == "/reloadCandidate") {
+  if (splitLocation == "/reloadCandidate") {
     return navigate("/Candidates_eligibility")
   }
 
-  if(splitLocation == "/reloadSettime") {
+  if (splitLocation == "/reloadSettime") {
     return navigate("/settime")
   }
 
-  const Timers = Moment(sessionStorage.getItem('CURDATE')).format('H') *1
-  if((Moment(sessionStorage.getItem('CURDATE')).format('YYYY/MM/DD') !== Moment().format('YYYY/MM/DD'))){
-    axios.delete(url.Mainurl + url.logout, { headers: { "Authorization": `Bearer ${token}` }}).then((res) => {
-      sessionStorage.setItem('confirm', token + setitem(60) +'.'+ setitem(60) + 'true')
-      sessionStorage.setItem('conFirmToken', token + setitem(60) +'.'+ setitem(60) + 'true')
-      sessionStorage.setItem('myToken', token + setitem(60) +'.'+ setitem(60) + 'true')
+  const Timers = Moment(sessionStorage.getItem('CURDATE')).format('H') * 1
+  if ((Moment(sessionStorage.getItem('CURDATE')).format('YYYY/MM/DD') !== Moment().format('YYYY/MM/DD'))) {
+    axios.post(url.Mainurl + url.logout, {
+      refresh_token: refresh_token
+    }).then((res) => {
+      sessionStorage.setItem('confirm', token + setitem(60) + '.' + setitem(60) + 'true')
+      sessionStorage.setItem('conFirmToken', token + setitem(60) + '.' + setitem(60) + 'true')
+      sessionStorage.setItem('myToken', token + setitem(60) + '.' + setitem(60) + 'true')
       sessionStorage.removeItem('dt')
       localStorage.removeItem('token')
       navigate('/')
     })
-    sessionStorage.setItem('confirm', token + setitem(60) +'.'+ setitem(60) + 'true')
-    sessionStorage.setItem('conFirmToken', token + setitem(60) +'.'+ setitem(60) + 'true')
-    sessionStorage.setItem('myToken', token + setitem(60) +'.'+ setitem(60) + 'true')
+    sessionStorage.setItem('confirm', token + setitem(60) + '.' + setitem(60) + 'true')
+    sessionStorage.setItem('conFirmToken', token + setitem(60) + '.' + setitem(60) + 'true')
+    sessionStorage.setItem('myToken', token + setitem(60) + '.' + setitem(60) + 'true')
     sessionStorage.removeItem('dt')
     localStorage.removeItem('token')
     navigate('/')
@@ -209,76 +214,55 @@ const Menu = (props) => {
                 </p>
               </Link>
               <div class="collapse" id="collapseExample">
-                  <TreeItem nodeId="2" label={
-                    <ListItem>
-                      <i className="far fa-circle nav-icon text-white ps-2" />
-                      <Link to="/slider" className="nav-link ps-2">
-                    
+                <TreeItem nodeId="2" label={
+                  <ListItem>
+                    <i className="far fa-circle nav-icon text-white ps-2" />
+                    <Link to="/slider" className="nav-link ps-2">
+
                       <p>ສະໄລສ</p>
                     </Link>
-                    </ListItem>
-                      
-                    }>
-                  </TreeItem>
-                  <TreeItem nodeId="3" label={
-                    <ListItem button component="a" href="#">
-                      <i className="far fa-circle nav-icon ps-2" />
-                      <Link to="/event" className="nav-link ps-2">
-                      
+                  </ListItem>
+
+                }>
+                </TreeItem>
+                <TreeItem nodeId="3" label={
+                  <ListItem button component="a" href="#">
+                    <i className="far fa-circle nav-icon ps-2" />
+                    <Link to="/event" className="nav-link ps-2">
+
                       <p>ກິດຈະກຳ</p>
                     </Link>
-                    </ListItem>}>
-                  </TreeItem>
+                  </ListItem>}>
+                </TreeItem>
 
-                  <TreeItem nodeId="4" label={
-                    <ListItem button component="a" href="#">
-                      <i className="far fa-circle nav-icon ps-2" />
-                      <Link to="/about" className="nav-link ps-2">
+                <TreeItem nodeId="4" label={
+                  <ListItem button component="a" href="#">
+                    <i className="far fa-circle nav-icon ps-2" />
+                    <Link to="/about" className="nav-link ps-2">
                       <p>ກ່ຽວກັບ</p>
                     </Link>
-                    </ListItem>}>
-                  </TreeItem>
+                  </ListItem>}>
+                </TreeItem>
 
-                  <TreeItem nodeId="4" label={
-                    <ListItem button component="a" href="#">
-                      <i className="far fa-circle nav-icon ps-2" />
-                      <Link to="/Footer" className="nav-link ps-2">
+                <TreeItem nodeId="4" label={
+                  <ListItem button component="a" href="#">
+                    <i className="far fa-circle nav-icon ps-2" />
+                    <Link to="/Footer" className="nav-link ps-2">
                       <p>ຈັດການ Footer</p>
                     </Link>
-                    </ListItem>}>
-                  </TreeItem>
+                  </ListItem>}>
+                </TreeItem>
               </div>
             </li>
             <li className="nav-item">
-              <Link className="nav-link">
+              <Link to="/user" className="nav-link">
                 <p data-toggle="collapse" href="#collapseExampleusers" role="button" aria-expanded="false" aria-controls="collapseExample">
                   <i class="nav-icon bi bi-person-vcard"></i>
                   ຈັດການຜູ້ເຂົ້າໃຊ້ລະບົບ
                 </p>
               </Link>
-              <div class="collapse" id="collapseExampleusers">
-                <TreeItem nodeId="6" label={
-                  <ListItem>
-                      <i className="far fa-circle nav-icon text-white ps-2" />
-                     <Link to="/user" className="nav-link ps-2">
-                   
-                    <p>ຜູ້ໃຊ້ລະບົບ</p>
-                  </Link>
-                  </ListItem>
-                  
-                }>
-                </TreeItem>
-                <TreeItem nodeId="7" label={
-                  <ListItem button component="a" href="#">
-                    <i className="far fa-circle nav-icon ps-2" />
-                    <Link to="/add-user" className="nav-link ps-2">
-                    <p>ສ້າງຜູ້ໃຊ້ລະບົບ</p>
-                  </Link>
-                  </ListItem>}>
-                </TreeItem>
-              </div>
             </li>
-           
+
             <li className="nav-item">
               <a onClick={Logout} className="nav-link">
                 <i className="fas fa-sign-out-alt nav-icon" />

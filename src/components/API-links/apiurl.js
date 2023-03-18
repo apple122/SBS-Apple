@@ -11,7 +11,7 @@ export default {
     getSingleUser: "api/v1/user/",
     updateUser: 'api/v1/auth/user/',
     deleteUser: "api/v1/auth/user/",
-    logout: "api/v1/auth/signout/12345-6789-00000-Luckydraw-Web-Med",
+    logout: "api/v1/logout",
     Changpasword: 'api/v1/change/12345-6789-00000-Luckydraw-Web-Med',
 
     // Event API

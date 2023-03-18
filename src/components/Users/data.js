@@ -6,5 +6,7 @@ export default {
     poostusers: 'api/v1/user/register_staff',
     patchusers: 'api/v1/user/',
 
+    loginedUser: 'api/v1/login',
     resetpassword: 'api/v1/reset/',
+    putchangeps: 'api/v1/change_password/'
 }

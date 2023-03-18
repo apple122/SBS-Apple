@@ -1,5 +1,6 @@
 import React from 'react'
-import useFuncations from '../useFuncations'
+import useFuncations from './useFuncations'
+import Skeleton_table from '../Skeleton-table'
 
 export default function Province() {
 
@@ -21,6 +22,8 @@ export default function Province() {
         Blackpro,
         proPage,
         proPageN,
+
+        Loaderror,
 
     } = useFuncations()
 
@@ -73,40 +76,44 @@ export default function Province() {
                     </div>
                 </div>
                 <div className="card-body table-responsive p-0">
-                    <table className="table table-hover text-nowrap">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>ຊື່ແຂວງ</th>
-                                <th className="text-center">ຈັດການ</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            {GETAPI.map((item, index) => (
-                                <tr key={index}>
-                                    <td>#{xpro++}</td>
-                                    <td>{item.province}</td>
-                                    <td className="text-center">
-                                        <div className='btn-group'>
-                                            <a href='#edit' onClick={() => editprovice(item)}><label for='inputedite' className='btn btn-sm btn-primary'><i class="bi bi-pencil-square"></i> ແກ້ໄຂຂໍ້ມູນ</label></a>
-                                            <label for='inputedite' className='btn btn-sm btn-danger' onClick={() => delprovice(item.id)}><i class="bi bi-trash3-fill"></i> ລົບຂໍ້ມູນ</label>
-                                        </div>
-                                    </td>
+                    {Loaderror === true ?
+                        <table className="table table-hover text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>ຊື່ແຂວງ</th>
+                                    <th className="text-center">ຈັດການ</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+
+                            <tbody>
+                                {GETAPI.map((item, index) => (
+                                    <tr key={index}>
+                                        <td>#{xpro++}</td>
+                                        <td>{item.province}</td>
+                                        <td className="text-center">
+                                            <div className='btn-group'>
+                                                <a href='#edit' onClick={() => editprovice(item)}><label for='inputedite' className='btn btn-sm btn-primary'><i class="bi bi-pencil-square"></i> ແກ້ໄຂຂໍ້ມູນ</label></a>
+                                                <label for='inputedite' className='btn btn-sm btn-danger' onClick={() => delprovice(item.id)}><i class="bi bi-trash3-fill"></i> ລົບຂໍ້ມູນ</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        :
+                        <Skeleton_table />
+                    }
                     <nav aria-label="..." className='px-2 pt-2 float-right'>
                         <ul class="pagination">
                             <li class="page-item">
-                                <a class="page-link" onClick={Blackpro}>Black</a>
+                                <a class="page-link" href="#black" onClick={Blackpro}>Black</a>
                             </li>
                             <li class="page-item">
                                 <a class="page-link" href="#">{proPageN} In {proPage}</a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link" onClick={Nextpro}>Next</a>
+                                <a class="page-link" href="#next" onClick={Nextpro}>Next</a>
                             </li>
                         </ul>
                     </nav>

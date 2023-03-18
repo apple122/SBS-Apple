@@ -21,7 +21,7 @@ export default function Add_prize() {
 
         if (active == true && inplus.length > 0) {
             axios.post(url.Mainurl + url.post_type, {
-                prize_type: 1,
+                prize_type: inplus,
                 is_active: true
             }).then((res) => {
                 const Toast = Swal.mixin({

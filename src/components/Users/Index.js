@@ -14,17 +14,51 @@ export default function Index() {
         datausers,
         Edit_Users,
         changeusers,
-        handleShow,
         show,
         handleClose,
-        message,
+        SubChangePS,
+        COUNT,
     } = useFunctions()
 
     return (
         <>
-            <Modal show={show} onHide={handleClose} size="lg" aria-labelledby="contained-modal-title-vcenter"  centered>
+            <Modal show={show} onHide={handleClose} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
+                <Modal.Header>
+                    <Modal.Title>
+                        <h5>New Password</h5>
+                    </Modal.Title>
+                </Modal.Header>
                 <Modal.Body>
-                    <a href={(message).substring(24)} className='btn btn-sm' target='_blank'>{(message).substring(24)}</a>
+                    <form method='POST' onSubmit={SubChangePS}>
+                        <div className='row'>
+                            <div className='col-md-6'>
+                                <div className='form-group'>
+                                    <label>New Password</label>
+                                    <div className='input-group'>
+                                        <span className='input-group-text'><i class="bi bi-asterisk"></i></span>
+                                        <input type='password' className='form-control' placeholder='*******' />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='col-md-6'>
+                                <div className='form-group'>
+                                    <label>Confirm Password</label>
+                                    <div className='input-group'>
+                                        <span className='input-group-text'><i class="bi bi-asterisk"></i></span>
+                                        <input type='password' className='form-control' placeholder='*******' />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <Modal.Footer>
+                            <Button variant="primary" type='submit'>
+                                <i class="bi bi-cloud-download"></i> Submit
+                            </Button>
+                            <Button variant="danger" onClick={handleClose} >
+                                <i class="bi bi-x-diamond"></i> Cancel
+                            </Button>
+                        </Modal.Footer>
+                    </form>
                 </Modal.Body>
             </Modal>
             <div className="content-wrapper" id="edit">
@@ -43,16 +77,10 @@ export default function Index() {
                                 <div className='card'>
                                     <div className="card-header display-flex">
                                         <div className="col-md-4">
-                                            <h3 className="card-title">User ( <strong className='text-danger'></strong> )</h3>
+                                            <h3 className="card-title">User ( <strong className='text-danger'>{COUNT}</strong> )</h3>
                                         </div>
                                         <div className="col-md-8">
-                                            <div className="input-group input-group-sm">
-                                                <input type="text" name="table_search" className="form-control float-right" placeholder="ຄົ້ນຫາດ້ວຍຊື່ແຂວງ..." />
-                                                <div className="input-group-append">
-                                                    <button type="submit" className="btn btn-default">
-                                                        <i className="fas fa-search" />
-                                                    </button>
-                                                </div>
+                                            <div className="input-group input-group-sm d-flex justify-content-end">
                                                 <div className="input-group-text bg-green">
                                                     <button class="accordion-button collapsed" onClick={cancel} type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">ເພີມແຂວງ</button>
                                                 </div>
